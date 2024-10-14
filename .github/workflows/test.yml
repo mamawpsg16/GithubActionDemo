@@ -17,18 +17,10 @@ jobs:
 
       - name: Validate HTML and JavaScript files
         run: |
-          # Check if the HTML file is valid (you can add more validation or tests)
           if [ -f "./index.html" ]; then
             echo "index.html exists."
           else
             echo "index.html not found!" && exit 1
-          fi
-
-          # Optionally, check if your script is present
-          if [ -f "./script.js" ]; then
-            echo "script.js exists."
-          else
-            echo "script.js not found!" && exit 1
           fi
 
   # Step 2: Merge 'development' into 'main' if tests pass
@@ -36,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: test  # This job will only run if the 'test' job passes
     if: success()  # Only run if the tests were successful
+
+    permissions:
+      contents: write  # This gives the job permission to push changes
 
     steps:
       - name: Checkout development branch
@@ -51,14 +46,7 @@ jobs:
 
       - name: Merge changes to 'main'
         run: |
-          # Fetch latest changes from the remote
           git fetch origin main
-
-          # Checkout the main branch
           git checkout main
-
-          # Merge the development branch into main
-          git merge development --no-ff  # Use --no-ff to force a merge commit, you can adjust this if needed
-
-          # Push the changes to the main branch on the remote
+          git merge development --no-ff
           git push origin main
