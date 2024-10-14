@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensure all branches are fetched
 
       - name: Validate HTML and JavaScript files
         run: |
@@ -36,10 +38,11 @@ jobs:
     if: success()  # Only run if the tests were successful
 
     steps:
-      - name: Checkout code
+      - name: Checkout development branch
         uses: actions/checkout@v3
         with:
           ref: development  # Ensure we're on the development branch
+          fetch-depth: 0    # Fetch all branches, including main
 
       - name: Configure Git for the merge
         run: |
@@ -48,6 +51,14 @@ jobs:
 
       - name: Merge changes to 'main'
         run: |
+          # Fetch latest changes from the remote
+          git fetch origin main
+
+          # Checkout the main branch
           git checkout main
-          git merge development  # Merging development into main
-          git push origin main  # Push the changes to 'main'
+
+          # Merge the development branch into main
+          git merge development --no-ff  # Use --no-ff to force a merge commit, you can adjust this if needed
+
+          # Push the changes to the main branch on the remote
+          git push origin main
