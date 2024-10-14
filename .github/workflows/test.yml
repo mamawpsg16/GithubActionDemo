@@ -1,0 +1,53 @@
+name: Simple Test and Merge
+
+on:
+  push:
+    branches:
+      - development  # Trigger the workflow only when there is a push to 'development'
+
+jobs:
+  # Step 1: Run basic tests on the 'development' branch
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate HTML and JavaScript files
+        run: |
+          # Check if the HTML file is valid (you can add more validation or tests)
+          if [ -f "./index.html" ]; then
+            echo "index.html exists."
+          else
+            echo "index.html not found!" && exit 1
+          fi
+
+          # Optionally, check if your script is present
+          if [ -f "./script.js" ]; then
+            echo "script.js exists."
+          else
+            echo "script.js not found!" && exit 1
+          fi
+
+  # Step 2: Merge 'development' into 'main' if tests pass
+  merge:
+    runs-on: ubuntu-latest
+    needs: test  # This job will only run if the 'test' job passes
+    if: success()  # Only run if the tests were successful
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: development  # Ensure we're on the development branch
+
+      - name: Configure Git for the merge
+        run: |
+          git config --global user.name "mamawpsg16"
+          git config --global user.email "kevinmensah114@gmail.com"
+
+      - name: Merge changes to 'main'
+        run: |
+          git checkout main
+          git merge development  # Merging development into main
+          git push origin main  # Push the changes to 'main'
