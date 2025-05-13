@@ -1,0 +1,38 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions with Matrix 🚀
+
+on: [push]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup environment
+        run: |
+          echo "✅ Setup completed successfully."
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build step
+        run: echo "🛠️ Building the project..."
+
+  test:
+    needs: build
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node_version: [14, 16, 18]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Run test step
+        run: echo "✅ Testing on ${{ matrix.os }} with Node.js ${{ matrix.node_version }}"
