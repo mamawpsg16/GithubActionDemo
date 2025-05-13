@@ -7,26 +7,22 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 Triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 Running on ${{ runner.os }}."
-      - run: echo "🔎 Branch: ${{ github.ref }} | Repo: ${{ github.repository }}"
-      - name: Intentionally fail setup
+      - name: Intentionally fail
         run: |
-          echo "❌ Simulating setup failure"
+          echo "❌ Setup failing..."
           exit 1
 
   build:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "🛠️ This should NOT run if setup fails."
+      - name: Build step
+        run: echo "🛠️ You shouldn't see this if setup fails."
 
   test:
-    needs: build
-    if: ${{ always() }}  # This ensures test runs even if setup/build fail
+    needs: [build]
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🧪 Running tests despite failure in previous job."
-      - run: echo "📊 Job status: ${{ job.status }}"
+      - name: Run test step
+        run: echo "✅ Running tests despite failure in setup/build."
