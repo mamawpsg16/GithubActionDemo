@@ -1,0 +1,28 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions  with Dependencies and Intentional Fail🚀
+
+on: [push]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Intentionally fail
+        run: |
+          echo "❌ Setup failing..."
+          exit 1
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build step
+        run: echo "🛠️ You shouldn't see this if setup fails."
+
+  test:
+    needs: [build]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run test step
+        run: echo "✅ Running tests despite failure in setup/build."
