@@ -35,3 +35,56 @@ jobs:
 
       - name: Run test step
         run: echo "✅ Testing on Ubuntu with Node.js ${{ matrix.node_version }}"
+    
+    # CACHING DEPENDENCIES
+    #   - name: Cache npm
+    #     uses: actions/cache@v4
+    #     with:
+    #       path: ~/.npm
+    #       key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    #       restore-keys: |
+    #         ${{ runner.os }}-node-
+
+    #   - run: npm ci # or npm install
+    #   - run: npm test
+    
+    # USING DATABASE AND SERVICE CONTAINERS
+  container-job:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mydatabase
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests with PostgreSQL
+        env:
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGHOST: localhost
+          PGDATABASE: mydatabase
+        run: |
+          echo "Connecting to Postgres and running tests..."
+          npm test
