@@ -1,4 +1,4 @@
-name: Manual Deploy Workflow
+name: Manual Deploy Workflow V2
 
 on:
   workflow_dispatch:
