@@ -1,0 +1,16 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions with Activity Types, Path & Filter with Multiple Event 🚀
+
+on: 
+    push:
+     paths:
+      - 'src/**'
+      - '!src/ignore-this-file.txt'
+      
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup
+        run: |
+          echo "Setup on Ubuntu"
