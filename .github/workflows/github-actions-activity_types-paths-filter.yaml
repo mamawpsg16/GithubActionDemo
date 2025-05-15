@@ -8,6 +8,8 @@ on:
       - '!src/ignore-this-file.txt' #WILL NOT TRIGGER WORKFLOW FOR THIS FILE
     pull_request:
       types: [opened, synchronize]
+    issues:
+        types: [opened]
       
 jobs:
   setup:
@@ -17,6 +19,7 @@ jobs:
       - name: Setup
         run: |
           echo "Setup on Ubuntu"
+
   pull_request:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -24,3 +27,11 @@ jobs:
       - name: Pull Request
         run: |
           echo "Pull Request on Ubuntu"
+
+  issues:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Issue Request
+        run: |
+          echo "Issue Request on Ubuntu"
