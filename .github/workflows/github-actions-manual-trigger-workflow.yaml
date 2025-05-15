@@ -15,6 +15,14 @@ on:
         description: 'Version/tag to deploy'
         required: false
         default: 'latest'
+      gender:
+        description: 'Are you a male?'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
 
 jobs:
   deploy:
