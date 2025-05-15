@@ -5,12 +5,22 @@ on:
     push:
      paths:
       - 'src/**'
-      - '!src/ignore-this-file.txt'
+      - '!src/ignore-this-file.txt' #WILL NOT TRIGGER WORKFLOW FOR THIS FILE
+    pull_request:
+      types: [opened, synchronize]
       
 jobs:
   setup:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Setup
         run: |
           echo "Setup on Ubuntu"
+  pull_request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Request
+        run: |
+          echo "Pull Request on Ubuntu"
