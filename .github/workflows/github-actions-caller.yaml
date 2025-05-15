@@ -1,0 +1,23 @@
+# .github/workflows/caller.yml
+name: Call Reusable Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/github-actions-reusable.yaml
+    with:
+      environment: production
+    secrets:
+      DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+  use-output:
+    needs: call-reusable
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Result was ${{ needs.call-reusable.outputs.result }}"
+      
+      - name: Dump github.event context
+        run: |
+          echo '${{ toJson(github.event) }}'
