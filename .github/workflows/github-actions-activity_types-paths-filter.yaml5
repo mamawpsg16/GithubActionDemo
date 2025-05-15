@@ -8,6 +8,10 @@ on:
       - '!src/ignore-this-file.txt' #WILL NOT TRIGGER WORKFLOW FOR THIS FILE
     pull_request:
       types: [opened, synchronize]
+      # branches: # Only run on PRs to main
+        # - main
+      # branches-ignore: # Run on all branches except main
+        # - main
     issues:
         types: [opened]
       
