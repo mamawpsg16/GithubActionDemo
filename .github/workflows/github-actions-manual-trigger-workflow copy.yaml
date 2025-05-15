@@ -1,0 +1,41 @@
+name: Manual Deploy Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment to deploy to V2'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      version:
+        description: 'Version/tag to deploy V2'
+        required: false
+        default: 'latest'
+      gender:
+        description: 'Are you a male? V2'
+        required: true
+        type: choice
+        options:
+          - 'YES'
+          - 'NO'
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show selected inputs
+        run: |
+          echo "Deploying version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }} environment"
+
+      # Example step: simulate deployment
+      - name: Deploy app
+        run: |
+          echo "Running deployment script..."
+          echo "Deploying version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}"
+          # Here you can add real deployment commands, e.g. ssh, kubectl, etc.
