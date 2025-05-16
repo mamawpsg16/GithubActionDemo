@@ -10,6 +10,10 @@ on:
     secrets:
       DEPLOY_TOKEN:
         required: true
+    outputs:
+      result:
+        description: "Result of example job"
+        value: ${{ jobs.example.outputs.result }}
 
 jobs:
   example:
