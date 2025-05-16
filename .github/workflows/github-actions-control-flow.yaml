@@ -1,4 +1,4 @@
-name: Run on HTML PR Changes
+name: Check Label if Bug
 
 on:
  issues:
