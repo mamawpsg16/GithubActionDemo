@@ -7,7 +7,7 @@ on:
     - closed
  pull_request:
     types:
-    - closed
+    - opened
   
 jobs:
     run_if_label_matches:
@@ -21,8 +21,8 @@ jobs:
         if: github.event.issue
         run: |
           echo An issue was closed
-          
+
       - name: if_pr
         if: github.event.pull_request
         run: |
-          echo A pull request was closed
+          echo A pull request was opened
