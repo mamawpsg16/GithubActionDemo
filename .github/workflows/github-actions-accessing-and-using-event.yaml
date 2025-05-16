@@ -24,7 +24,9 @@ jobs:
           sudo apt-get install gh -y
 
       - name: Dump event context
-        run: echo '${{ toJson(github.event) }}'
+        env:
+         EVENT_CONTEXT: ${{ toJSON(github.event) }}  # 👈 your custom env var
+        run: echo "$EVENT_CONTEXT"
 
       - name: Simulate Build
         run: |
