@@ -1,0 +1,30 @@
+on:
+    push:
+      branches:
+        - main
+  
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Build App
+          run: echo 'Building...'
+  
+    wait_for_approval:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Simulated Approval Step
+          run: |
+            echo "Simulate approval..."
+            echo "Sleeping for 30 seconds to simulate manual wait"
+            sleep 30
+            echo "Continuing after simulated approval"
+  
+    deploy:
+      needs: wait_for_approval
+      runs-on: ubuntu-latest
+      steps:
+        - name: Deploy App
+          run: echo 'Deploying...'
+  

@@ -1,0 +1,35 @@
+name: Manual Deploy
+
+# Manual trigger only
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      version:
+        description: 'Version to deploy (tag or commit hash)'
+        required: false
+        default: 'latest'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Display input values
+        run: |
+          echo "Deploying to ${{ github.event.inputs.environment }}"
+          echo "Version: ${{ github.event.inputs.version }}"
+
+      - name: Simulate deployment
+        run: |
+          echo "🔧 Preparing to deploy..."
+          echo "✅ Deployed ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}"
