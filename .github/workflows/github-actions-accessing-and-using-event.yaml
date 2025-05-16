@@ -1,0 +1,27 @@
+name: Run on HTML Changes
+
+on:
+  push:
+    paths:
+      - 'src/*.html'
+      - '!src/ignore-this-file.txt'
+
+jobs:
+  html-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Print changed HTML file event
+        run: |
+         echo "Triggered by: ${{ github.event.head_commit.message }}"
+
+      - name: Dump event context
+        run: echo '${{ toJson(github.event) }}'
+
+      - name: Simulate Build
+        run: |
+          echo "Building site..."
+          ls src/*.html
