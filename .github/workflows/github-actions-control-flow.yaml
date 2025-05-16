@@ -14,11 +14,11 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: if_labelled_as_bug
-        if: github.event.label.name == 'bug'
+        if: github.event.label.name == 'bug' && github.event.action == 'labeled'
         run: echo 'The label was bug'
 
       - name: if_issue
-        if: github.event.issue
+        if: github.event.issue && github.event.action == 'closed'
         run: |
           echo An issue was closed
 
