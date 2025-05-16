@@ -3,14 +3,14 @@ name: Reusable Workflow
 
 on:
   workflow_call:
-    inputs:
+    inputs:  #👈 These are called **Inputs** (Passed by the caller to control behavior)
       environment:
         required: true
         type: string
-    secrets:
+    secrets: #👈 These are called **Secrets** (Passed securely by the caller (like tokens))
       DEPLOY_TOKEN:
         required: true
-    outputs:
+    outputs: #👈 These are called **Workflow Outputs** (Returned by this workflow to the caller)
       result:
         description: "Result of example job"
         value: ${{ jobs.example.outputs.result }}
@@ -23,4 +23,4 @@ jobs:
     steps:
       - id: step1
         run: |
-          echo "result=WHY YOU SUCKING D?" >> $GITHUB_OUTPUT
+          echo "result=WHY NOT?  ${{ inputs.environment }}" >> $GITHUB_OUTPUT
